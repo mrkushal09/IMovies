@@ -1,0 +1,627 @@
+{
+  "entities": {
+    "UserPublic": {
+      "title": "UserPublic",
+      "description": "Publicly visible user profile data without PII.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "photoURL": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "city": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 50
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "displayName", "city", "createdAt", "updatedAt"]
+    },
+    "UserPrivate": {
+      "title": "UserPrivate",
+      "description": "Isolated private PII data for a user.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 254
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 24
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "email", "updatedAt"]
+    },
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Trusted administrator membership marker.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 254
+        },
+        "grantedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "email", "grantedAt"]
+    },
+    "Movie": {
+      "title": "Movie",
+      "description": "Theatrical film release metadata.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "synopsis": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 1200
+        },
+        "genre": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40
+        },
+        "format": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40
+        },
+        "certificate": {
+          "type": "string",
+          "enum": ["U", "UA", "UA 13+", "UA 16+", "A"]
+        },
+        "durationMins": {
+          "type": "number"
+        },
+        "rating": {
+          "type": "number"
+        },
+        "votesCount": {
+          "type": "number"
+        },
+        "releaseDate": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 20
+        },
+        "director": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 80
+        },
+        "castSummary": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 240
+        },
+        "posterUrl": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "backdropUrl": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "status": {
+          "type": "string",
+          "enum": ["now_showing", "coming_soon", "archived"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "title",
+        "synopsis",
+        "genre",
+        "language",
+        "format",
+        "certificate",
+        "durationMins",
+        "rating",
+        "votesCount",
+        "releaseDate",
+        "director",
+        "castSummary",
+        "posterUrl",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Theatre": {
+      "title": "Theatre",
+      "description": "Cinema venue and auditorium facility.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "city": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 50
+        },
+        "address": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 240
+        },
+        "amenities": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 200
+        },
+        "screensCount": {
+          "type": "number"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["name", "city", "address", "amenities", "screensCount", "createdAt", "updatedAt"]
+    },
+    "Show": {
+      "title": "Show",
+      "description": "Scheduled screening linking a movie and theatre with pricing.",
+      "type": "object",
+      "properties": {
+        "movieId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "movieTitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "theatreId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "theatreName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "city": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 50
+        },
+        "screenName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60
+        },
+        "format": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40
+        },
+        "showDate": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "showTime": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 12
+        },
+        "classicPrice": {
+          "type": "number"
+        },
+        "primePrice": {
+          "type": "number"
+        },
+        "reclinerPrice": {
+          "type": "number"
+        },
+        "totalSeats": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["scheduled", "cancelled"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "movieId",
+        "movieTitle",
+        "theatreId",
+        "theatreName",
+        "city",
+        "screenName",
+        "format",
+        "language",
+        "showDate",
+        "showTime",
+        "classicPrice",
+        "primePrice",
+        "reclinerPrice",
+        "totalSeats",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "SeatReservation": {
+      "title": "SeatReservation",
+      "description": "Individual reserved seat document inside a show subcollection to prevent unbounded arrays and double-booking.",
+      "type": "object",
+      "properties": {
+        "seatCode": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 6,
+          "pattern": "^[A-Z][0-9]{1,2}$"
+        },
+        "tier": {
+          "type": "string",
+          "enum": ["classic", "prime", "recliner"]
+        },
+        "price": {
+          "type": "number"
+        },
+        "showId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "bookingId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["booked"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["seatCode", "tier", "price", "showId", "bookingId", "userId", "status", "createdAt"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Confirmed or cancelled user ticket reservation.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "showId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "movieId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "movieTitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "posterUrl": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "theatreName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "city": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 50
+        },
+        "screenName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60
+        },
+        "format": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40
+        },
+        "showDate": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "showTime": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 12
+        },
+        "seatCodes": {
+          "type": "array",
+          "description": "Bounded list of up to 10 seat codes per booking."
+        },
+        "seatCount": {
+          "type": "number"
+        },
+        "subtotalAmount": {
+          "type": "number"
+        },
+        "convenienceFee": {
+          "type": "number"
+        },
+        "totalAmount": {
+          "type": "number"
+        },
+        "paymentId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "bookingCode": {
+          "type": "string",
+          "minLength": 6,
+          "maxLength": 24,
+          "pattern": "^[A-Z0-9\\-]+$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["confirmed", "cancelled"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "userId",
+        "showId",
+        "movieId",
+        "movieTitle",
+        "posterUrl",
+        "theatreName",
+        "city",
+        "screenName",
+        "format",
+        "showDate",
+        "showTime",
+        "seatCodes",
+        "seatCount",
+        "subtotalAmount",
+        "convenienceFee",
+        "totalAmount",
+        "paymentId",
+        "bookingCode",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Payment transaction record linked atomically to a booking.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "bookingId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string",
+          "enum": ["INR", "USD"]
+        },
+        "method": {
+          "type": "string",
+          "enum": ["upi", "card", "netbanking", "wallet"]
+        },
+        "transactionRef": {
+          "type": "string",
+          "minLength": 6,
+          "maxLength": 64,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["succeeded", "refunded"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "bookingId", "amount", "currency", "method", "transactionRef", "status", "createdAt", "updatedAt"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "User-scoped booking confirmation or cancellation alert.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "message": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 400
+        },
+        "type": {
+          "type": "string",
+          "enum": ["booking_confirmed", "booking_cancelled", "system"]
+        },
+        "read": {
+          "type": "boolean"
+        },
+        "relatedBookingId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "title", "message", "type", "read", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserPublic",
+      "description": "Public profile record for authenticated cinema patrons."
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": "UserPrivate",
+      "description": "Split collection isolating user PII (email, phone) to owner or admin."
+    },
+    "/admins/{adminId}": {
+      "schema": "AdminRecord",
+      "description": "Trusted administrator lookup table."
+    },
+    "/movies/{movieId}": {
+      "schema": "Movie",
+      "description": "Publicly readable catalog of movies managed by admins."
+    },
+    "/theatres/{theatreId}": {
+      "schema": "Theatre",
+      "description": "Publicly readable catalog of cinema venues managed by admins."
+    },
+    "/shows/{showId}": {
+      "schema": "Show",
+      "description": "Publicly readable movie screening schedule managed by admins."
+    },
+    "/shows/{showId}/seats/{seatId}": {
+      "schema": "SeatReservation",
+      "description": "Per-seat reservation locks under a show to prevent unbounded arrays and race conditions."
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Ticket bookings isolated to the owning patron or cinema admin."
+    },
+    "/payments/{paymentId}": {
+      "schema": "Payment",
+      "description": "Payment ledger records isolated to the owning patron or cinema admin."
+    },
+    "/notifications/{notificationId}": {
+      "schema": "NotificationItem",
+      "description": "In-app booking & cancellation alerts isolated to the owning patron."
+    }
+  }
+}
